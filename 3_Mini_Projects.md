@@ -124,48 +124,97 @@ print("The computer won", computer_wins, "times.")
 print("Goodbye!")
 ```
 
-# **4_Snake Water Gun Game**
+# **4_Choose Your Own Adventure**
 ```python
-import random
+name = input("Type your name: ")
+print("Welcome", name, "to this adventure!")
 
-def gamewin (comp, you):
-    if (comp == you):
-        return None
-    elif (comp == 'S'):
-        if (you == 'W'):
-            return False
-        elif (you == 'G'):
-            return True
-    elif (comp == 'W'):
-        if (you == 'S'):
-            return True
-        elif (you == 'G'):
-            return False
-    elif (comp == 'G'):
-        if (you == 'W'):
-            return True
-        elif (you == 'S'):
-            return False
+answer = input(
+    "You are on a dirty road, it has come to an end and you can go left or right. Which way would you like to go?").lower()
 
-print ("Comp turn: Snake(S) Water(W) or Gun(G)?")
-randno = random.randint(1, 3)
-if randno == 1:
-    comp = 'S'
-elif randno == 2:
-    comp = 'G'
-elif randno == 3:
-    comp = 'W'
+if answer == "left":
+    answer = input(
+        '''You come to a river, 
+           you can walk around it or swim accross?
+           Type walk to walk around and swim to swim accross:''')
 
-you = input ("Your turn: Snake(S) Water(W) or Gun(G)?")
-a = gamewin (comp, you)
+    if answer == "swim":
+        print("You swam acrross and were eaten by an alligator.")
+    elif answer == "walk":
+        print("You walked for many miles, ran out of water and you lost the game.")
+    else:
+        print("Not a valid option. You lose.")
 
-print (f"Comp choose: {comp}")
-print (f"You choose: {you}") 
+elif answer == "right":
+    answer = input(
+        "You come to a bridge, it looks wobbly, do you want to cross it or head back (cross/back)? ")
 
-if a == None:
-    print ("THE GAME IS TIE")
-elif a:
-    print ("YOU WIN")
+    if answer == "back":
+        print("You go back and lose.")
+    elif answer == "cross":
+        answer = input(
+            '''You cross the bridge and meet a stranger. 
+            Do you talk to them (yes/no)?''')
+
+        if answer == "yes":
+            print("You talk to the stanger and they give you gold. You WIN!")
+        elif answer == "no":
+            print("You ignore the stranger and they are offended and you lose.")
+        else:
+            print("Not a valid option. You lose.")
+    else:
+        print("Not a valid option. You lose.")
+
 else:
-    print ("YOU LOSE")
+    print("Not a valid option. You lose.")
+
+print("Thank you for trying", name)
+```
+# **5_Passward Manager**
+```python
+from cryptography.fernet import Fernet
+'''
+def write_key():
+    key = Fernet.generate_key()
+    with open("key.key", "wb") as key_file:
+        key_file.write(key)'''
+
+def load_key():
+    file = open("key.key", "rb")
+    key = file.read()
+    file.close()
+    return key
+
+key = load_key()
+fer = Fernet(key)
+
+def view():
+    with open('passwords.txt', 'r') as f:
+        for line in f.readlines():
+            data = line.rstrip()
+            user, passw = data.split("|")
+            print("User:", user, "| Password:",
+                  fer.decrypt(passw.encode()).decode())
+
+
+def add():
+    name = input('Account Name: ')
+    pwd = input("Password: ")
+
+    with open('passwords.txt', 'a') as f:
+        f.write(name + "|" + fer.encrypt(pwd.encode()).decode() + "\n")
+
+while True:
+    mode = input(
+        "Would you like to add a new password or view existing ones (view, add), press q to quit? ").lower()
+    if mode == "q":
+        break
+
+    if mode == "view":
+        view()
+    elif mode == "add":
+        add()
+    else:
+        print("Invalid mode.")
+        continue
 ```
