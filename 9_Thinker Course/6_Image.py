@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import ImageTk,Image
 
 root = Tk()
-root.title('Learn To Code at Codemy.com')
+root.title('Image')
 root.iconbitmap('Pics\iconn.ico')
 
 
